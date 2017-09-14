@@ -123,7 +123,8 @@ class NLLocator : public Seiscomp::Seismology::LocatorInterface {
 		double        _fixedDepthGridSpacing;
 		double        _defaultPickError;
 		bool          _allowMissingStations;
-		bool          _enableSEDParameters;
+		bool          _enableSaveNllocExpectation; 
+	 	bool          _enableSEDParameters;
 		bool          _enableNLLOutput;
 		bool          _enableNLLSaveInput;
 
