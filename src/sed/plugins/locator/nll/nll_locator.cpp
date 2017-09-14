@@ -324,6 +324,7 @@ NLLocator::NLLocator() {
 	_fixedDepthGridSpacing = 0.1;
 	_allowMissingStations = true;
 	_enableSEDParameters = false;
+	_enableSaveNllocExpectation = false; 
 	_enableNLLOutput = true;
 	_enableNLLSaveInput = true;
 
@@ -518,6 +519,13 @@ bool NLLocator::init(const Config::Config &config) {
 	}
 	catch ( ... ) {
 		_enableSEDParameters = false;
+	}
+
+ 	try {
+		_enableSaveNllocExpectation = config.getBool("NonLinLoc.enableSaveNllocExpectation");
+	}
+	catch ( ... ) {
+		_enableSaveNllocExpectation = false;
 	}
 
 	try {
@@ -805,8 +813,11 @@ Origin* NLLocator::locate(PickList &pickList) throw(Core::GeneralException) {
 	}
 
 	// Suppress physical NLL output it will be done later manually
+	// TODO: CALC_SED_ORIGIN and SAVE_NLLOC_EXPECTATION cannot be used simultaineously!
 	if ( _enableSEDParameters )
 		params.push_back("LOCHYPOUT NONE CALC_SED_ORIGIN");
+	else if ( _enableSaveNllocExpectation )
+		params.push_back("LOCHYPOUT NONE SAVE_NLLOC_EXPECTATION");
 	else
 		params.push_back("LOCHYPOUT NONE");
 
